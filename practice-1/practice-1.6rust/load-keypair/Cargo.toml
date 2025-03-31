@@ -1,0 +1,9 @@
+[package]
+name = "load-keypair"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dotenv = "0.15.0"
+dotenvy = "0.15.7"
+solana-sdk = "2.2.2"
