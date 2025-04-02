@@ -8,7 +8,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let secret_key = env::var("SECRET_KEY")?;
     println!("Secret Key: {:?}", str_to_u8_array(secret_key.as_str()));
     
-    let keypair: Keypair = Keypair::from_bytes(&str_to_u8_array(secret_key.as_str()))?;
+    let keypair: Keypair = Keypair::from_bytes(
+        &str_to_u8_array(secret_key.as_str())
+    )?;
     
     let public_key = keypair.pubkey().to_string();
     println!("Public Key: {}", &public_key); 

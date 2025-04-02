@@ -32,6 +32,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println("get Sol to wallet.", privatKey.PublicKey())
 	fmt.Println("Transaction signature:", out)
 }
 
