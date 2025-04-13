@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	search := `kumar`
+	search := `^anza`
 	fmt.Println("Generating keypair with a fixed part in the public key...match", search)
 	keypair := generateKeypair(search)
 	println("Public Key:", keypair.PublicKey().String())
