@@ -1,16 +1,11 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token_interface::{
-        close_account, transfer_checked, TransferChecked, CloseAccount
+        close_account, transfer_checked, TransferChecked, CloseAccount, Mint, TokenAccount, TokenInterface,
     };
 
 use crate::{
     Offer,
     InterfaceAccount,
-};
-use anchor_spl::token_interface::{
-    Mint,
-    TokenAccount,
-    TokenInterface,
 };
 
 #[derive(Accounts)]
@@ -21,10 +16,17 @@ pub struct CloseOffer<'info> {
     pub offer: Account<'info, Offer>,
     #[account(mut)]
     pub vault: InterfaceAccount<'info, TokenAccount>,
-    #[account(mut)]
+    #[account(
+        mut,
+        associated_token::mint = token_mint_a,
+        associated_token::authority = maker,
+        associated_token::token_program = token_program,
+    )]
     pub maker_token_account_a: InterfaceAccount<'info, TokenAccount>,
+    #[account( mint::token_program = token_program)]
     pub token_mint_a: InterfaceAccount<'info, Mint>,
     pub token_program: Interface<'info, TokenInterface>,
+    pub system_program: Program<'info, System>,
 }
 
 pub fn send_offered_tokens_to_maker(ctx: &Context<CloseOffer>) -> Result<()> {

@@ -520,10 +520,11 @@ describe("escrow1", () => {
     offerAddress: PublicKey,
     maker: Keypair,
     vaultAddress: PublicKey,
+    usdcMint: PublicKey,
   ): Promise<string> => {
     
     const makerTokenAccountA = getAssociatedTokenAddressSync(
-      usdcMint.publicKey,
+      usdcMint,
       maker.publicKey,
       false,
       TOKEN_PROGRAM
@@ -535,13 +536,12 @@ describe("escrow1", () => {
         maker: maker.publicKey,
         offer: offerAddress,
         vault: vaultAddress,
-        tokenMintA: usdcMint.publicKey,
-        makerTokenAccountA: makerTokenAccountA,
         // As the `token_program` account is specified as
         //
         //   pub token_program: Interface<'info, TokenInterface>,
         // See note in the `makeOfferTx` on why this program address is provided
         // and the rest are not.
+        tokenMintA: usdcMint,
         tokenProgram: TOKEN_PROGRAM,
       })
       .signers([maker])
@@ -581,7 +581,8 @@ describe("escrow1", () => {
     const closeOffer = await closeOfferTx(
       offerAddress,
       alice,
-      vaultAddress
+      vaultAddress,
+      usdcMint.publicKey,
     );
     
     expect(closeOffer).toBeUndefined();
